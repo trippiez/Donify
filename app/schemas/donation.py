@@ -1,17 +1,20 @@
-from pydantic import BaseModel
+from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel, Field, PositiveInt
+
+from app.schemas.base import AbstractBaseSchema
 
 
 class DonationBase(BaseModel):
-    pass
+    full_amount: PositiveInt = Field(...)
+    comment: Optional[str]
 
 
 class DonationCreate(DonationBase):
-    pass
+    id: int
+    create_date: datetime
 
 
-class DonationUpdate(DonationBase):
-    pass
-
-
-class DonationDB(DonationBase):
+class DonationDB(DonationBase, AbstractBaseSchema):
     pass

@@ -4,7 +4,6 @@ from sqlalchemy.orm import declarative_base, declared_attr, sessionmaker
 
 from app.core.config import settings
 
-
 convention = {
     "ix": "ix_%(column_0_label)s",
     "uq": "uq_%(table_name)s_%(column_0_name)s",
