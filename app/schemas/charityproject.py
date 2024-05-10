@@ -1,8 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, PositiveInt
 
 
 class CharityProjectBase(BaseModel):
-    pass
+    name: str = Field(
+        ..., min_length=1, max_length=100
+    )
+    description: str = Field(
+        ..., min_length=1
+    )
+    full_amount: PositiveInt = Field(...)
 
 
 class CharityProjectCreate(CharityProjectBase):
@@ -14,4 +20,7 @@ class CharityProjectUpdate(CharityProjectBase):
 
 
 class CharityProjectDB(CharityProjectBase):
-    pass
+    id: int
+
+    class Config:
+        orm_mode = True
