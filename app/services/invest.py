@@ -28,7 +28,7 @@ async def close_date_object(
     return obj_in
 
 
-async def invest(
+async def investing(
     obj_in: Union[CharityProject, Donation],
     obj_model: Union[CharityProject, Donation],
 ):
@@ -48,7 +48,7 @@ async def invest(
     return obj_in, obj_model
 
 
-async def investing(
+async def invest(
     obj_in: Union[CharityProject, Donation],
     obj_model: Union[CharityProject, Donation],
     session: AsyncSession
