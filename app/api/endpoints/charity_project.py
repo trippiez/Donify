@@ -57,7 +57,9 @@ async def partially_update_charity_project(
     obj_in: CharityProjectUpdate,
     session: AsyncSession = Depends(get_async_session)
 ):
-    charity_project = await check_charity_project_exists(charity_project_id, session)
+    charity_project = await check_charity_project_exists(
+        charity_project_id, session
+    )
     await check_project_not_fully_invested(charity_project)
 
     if obj_in.name is not None:
