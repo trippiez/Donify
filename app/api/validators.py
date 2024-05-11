@@ -1,8 +1,10 @@
 from fastapi import HTTPException
+from http import HTTPStatus
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.charity_project import charity_project_crud
 from app.models import CharityProject
+from app.api.constants import ZERO_INVESTED_AMOUNT, FULLY_INVESTED_TRUE
 
 
 async def check_name_duplicate(
@@ -16,7 +18,7 @@ async def check_name_duplicate(
 
     if project_id is not None:
         raise HTTPException(
-            status_code=400,
+            status_code=HTTPStatus.BAD_REQUEST,
             detail='Благотворительный проект с таким именем уже существует!'
         )
 
@@ -32,7 +34,7 @@ async def check_charity_project_exists(
 
     if project is None:
         raise HTTPException(
-            status_code=404,
+            status_code=HTTPStatus.NOT_FOUND,
             detail='Благотворительный проект не найден!'
         )
     return project
@@ -44,7 +46,7 @@ async def check_full_amount_greater_than_invested(
 ):
     if charity_project.invested_amount > obj_full_amount:
         raise HTTPException(
-            status_code=400,
+            status_code=HTTPStatus.BAD_REQUEST,
             detail='Сумма пожертвования не может быть меньше внесённой!'
         )
 
@@ -52,9 +54,9 @@ async def check_full_amount_greater_than_invested(
 async def check_project_not_fully_invested(
     charity_project: CharityProject
 ):
-    if charity_project.fully_invested == 1:
+    if charity_project.fully_invested == FULLY_INVESTED_TRUE:
         raise HTTPException(
-            status_code=400,
+            status_code=HTTPStatus.BAD_REQUEST,
             detail='Благотворительный проект полностью проинвестирован!'
         )
 
@@ -62,8 +64,8 @@ async def check_project_not_fully_invested(
 async def check_charity_project_invested_exists(
     charity_project: CharityProject
 ):
-    if charity_project.invested_amount > 0:
+    if charity_project.invested_amount > ZERO_INVESTED_AMOUNT:
         raise HTTPException(
-            status_code=400,
+            status_code=HTTPStatus.BAD_REQUEST,
             detail='Средства в благотворительный проект уже были внесены!'
         )
