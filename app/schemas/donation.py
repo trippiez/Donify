@@ -12,9 +12,16 @@ class DonationBase(BaseModel):
 
 
 class DonationCreate(DonationBase):
-    id: int
-    create_date: datetime
+    id: Optional[int]
+    create_date: Optional[datetime]
 
 
 class DonationDB(DonationBase, AbstractBaseSchema):
+    user_id: int
+
+
+class DonationUserDB(DonationCreate):
     pass
+
+    class Config:
+        orm_mode = True

@@ -1,7 +1,8 @@
-from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException
-from app.models import CharityProject
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.crud.charity_project import charity_project_crud
+from app.models import CharityProject
 
 
 async def check_name_duplicate(

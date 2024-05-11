@@ -56,7 +56,7 @@ async def invest(
     objects = await get_not_full_invested_objects(obj_model, session)
 
     for obj in objects:
-        obj_in, obj_model = await invest(obj_in, obj)
+        obj_in, obj_model = await investing(obj_in, obj)
         session.add(obj_in)
         session.add(obj)
 
