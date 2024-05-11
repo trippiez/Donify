@@ -2,9 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
-from app.schemas.charity_project import CharityProjectDB, CharityProjectCreate
+from app.schemas.charity_project import CharityProjectDB, CharityProjectCreate, CharityProjectUpdate
 from app.crud.charity_project import charity_project_crud
-from app.api.validators import check_charity_project_exists
+from app.api.validators import check_charity_project_exists, check_name_duplicate
+from app.services.invest import invest
+from app.models import Donation
 
 router = APIRouter()
 
@@ -31,7 +33,30 @@ async def create_new_charity_project(
     session: AsyncSession = Depends(get_async_session)
 ):
     project = await charity_project_crud.create(charity_project, session)
+    await invest(project, Donation, session)
     return project
+
+
+@router.patch(
+    '/{charity_project_id}',
+    response_model=CharityProjectDB,
+    response_model_exclude_none=True
+)
+async def partially_update_charity_project(
+    charity_project_id: int,
+    obj_in: CharityProjectUpdate,
+    session: AsyncSession = Depends(get_async_session)
+):
+    charity_project = await check_charity_project_exists(charity_project_id, session)
+
+    if obj_in.name is not None:
+        await check_name_duplicate(obj_in.name, session)
+
+    charity_project = await charity_project_crud.update(
+        charity_project, obj_in, session
+    )
+
+    return charity_project
 
 
 @router.delete(
