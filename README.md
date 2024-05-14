@@ -62,7 +62,7 @@ pip install -r requirements.txt
 Run the script:
 
 ```
-uvicorn app.main:app
+uvicorn app.main:app (--reload)
 ```
 
 ## Contacts
