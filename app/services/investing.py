@@ -9,6 +9,8 @@ def investing(
     entities: List[BaseModel]
 ) -> List[BaseModel]:
     invested_entities = []
+    if target.invested_amount is None:
+        target.invested_amount = 0
     for obj in entities:
         allocation_amount = calculate_allocation(target, obj)
         invested_entities.append(obj)
@@ -27,7 +29,7 @@ def allocate_investments(target, entity, allocation_amount):
     for obj in [target, entity]:
         obj.invested_amount += allocation_amount
         obj.fully_invested = (
-            allocation_amount == obj.full_amount
+            obj.invested_amount == obj.full_amount
         )
         if obj.fully_invested:
             obj.close_date = datetime.now()
