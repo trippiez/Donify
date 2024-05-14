@@ -41,19 +41,19 @@ async def create_new_charity_project(
 ):
     await check_name_duplicate(charity_project.name, session)
 
-    project = await charity_project_crud.create(
+    new_charity_project = await charity_project_crud.create(
         charity_project,
         session,
         pass_commit=True)
 
     session.add_all(
         investing(
-            project,
-            await donation_crud.get_not_full_invested_objects(session)))
+            new_charity_project,
+            await donation_crud.get_unfinished_investments(session)))
 
     await session.commit()
-    await session.refresh(project)
-    return project
+    await session.refresh(new_charity_project)
+    return new_charity_project
 
 
 @router.patch(

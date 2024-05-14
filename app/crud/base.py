@@ -74,7 +74,7 @@ class CRUDBase:
         await session.commit()
         return db_obj
 
-    async def get_not_full_invested_objects(
+    async def get_unfinished_investments(
         self,
         session: AsyncSession,
     ):
