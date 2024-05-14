@@ -67,7 +67,7 @@ uvicorn app.main:app (--reload)
 
 ## Query examples
 
-### Вернуть список всех проектов.
+### Get All Charity Projects.
 #### GET - http://127.0.0.1:8000/charity_project/
 
 ```
@@ -83,7 +83,7 @@ uvicorn app.main:app (--reload)
 }
 ```
 
-### Сделать пожертвование.
+### Create Donation.
 #### POST - http://127.0.0.1:8000/donation/
 
 ```
@@ -107,7 +107,7 @@ uvicorn app.main:app (--reload)
 ```
 
 
-### Вернуть список своих пожертвований.
+### Get User Donations.
 #### GET - http://127.0.0.1:8000/donation/my
 
 ```
