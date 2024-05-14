@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.validators import check_donate_exists
 from app.core.db import get_async_session
-from app.core.user import current_superuser, current_user
+from app.core.user import current_user
 from app.crud.charity_project import charity_project_crud
 from app.crud.donation import donation_crud
 from app.models import User
@@ -59,18 +58,3 @@ async def create_new_donation(
     await session.commit()
     await session.refresh(new_donate)
     return new_donate
-
-
-@router.delete(
-    '/{donate_id}',
-    response_model=DonationDB,
-    response_model_exclude_none=True,
-    dependencies=[Depends(current_superuser)]
-)
-async def remove_charity_project(
-    donate_id: int,
-    session: AsyncSession = Depends(get_async_session)
-):
-    donate = await check_donate_exists(donate_id, session)
-
-    return await donation_crud.remove(donate, session)

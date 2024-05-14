@@ -65,6 +65,62 @@ Run the script:
 uvicorn app.main:app (--reload)
 ```
 
+## Query examples
+
+### Вернуть список всех проектов.
+#### GET - http://127.0.0.1:8000/charity_project/
+
+```
+#RESPONSE
+{
+  "name": "Project_1",
+  "description": "desc of project",
+  "full_amount": 40000,
+  "id": 1,
+  "invested_amount": 8000,
+  "fully_invested": false,
+  "create_date": "2024-05-13T10:00"
+}
+```
+
+### Сделать пожертвование.
+#### POST - http://127.0.0.1:8000/donation/
+
+```
+#REQUEST
+{
+  "full_amount": 10,
+  "comment": "string"
+}
+
+
+#RESPONSE
+{
+  "name": "Project_1",
+  "description": "desc of project",
+  "full_amount": 40000,
+  "id": 1,
+  "invested_amount": 8000,
+  "fully_invested": false,
+  "create_date": "2024-05-13T10:00"
+}
+```
+
+
+### Вернуть список своих пожертвований.
+#### GET - http://127.0.0.1:8000/donation/my
+
+```
+#RESPONSE
+  {
+    "full_amount": 10,
+    "comment": "string",
+    "id": 1,
+    "create_date": "2024-05-13T10:00"
+  }
+```
+
+
 ## Contacts
 
 Backend by: Eric Ivanov

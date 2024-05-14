@@ -5,8 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.constants import FULLY_INVESTED_TRUE, ZERO_INVESTED_AMOUNT
 from app.crud.charity_project import charity_project_crud
-from app.crud.donation import donation_crud
-from app.models import CharityProject, Donation
+from app.models import CharityProject
 
 
 async def check_name_duplicate(
@@ -40,23 +39,6 @@ async def check_charity_project_exists(
             detail='Благотворительный проект не найден!'
         )
     return project
-
-
-async def check_donate_exists(
-    donate_id: int,
-    session: AsyncSession
-) -> Donation:
-
-    donate = await donation_crud.get(
-        donate_id, session
-    )
-
-    if donate is None:
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
-            detail='Благотворительный проект не найден!'
-        )
-    return donate
 
 
 async def check_full_amount_greater_than_invested(
