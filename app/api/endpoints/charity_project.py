@@ -9,11 +9,11 @@ from app.api.validators import (check_charity_project_exists,
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
-from app.models import Donation
+from app.crud.donation import donation_crud
 from app.schemas.charity_project import (CharityProjectCreate,
                                          CharityProjectDB,
                                          CharityProjectUpdate)
-from app.services.invest import invest
+from app.services.investing import investing
 
 router = APIRouter()
 
@@ -26,8 +26,7 @@ router = APIRouter()
 async def get_all_charity_projects(
     session: AsyncSession = Depends(get_async_session)
 ):
-    projects = await charity_project_crud.get_multi(session)
-    return projects
+    return await charity_project_crud.get_multi(session)
 
 
 @router.post(
@@ -41,8 +40,19 @@ async def create_new_charity_project(
     session: AsyncSession = Depends(get_async_session)
 ):
     await check_name_duplicate(charity_project.name, session)
-    project = await charity_project_crud.create(charity_project, session)
-    await invest(project, Donation, session)
+
+    project = await charity_project_crud.create(
+        charity_project,
+        session,
+        pass_commit=True)
+
+    session.add_all(
+        investing(
+            project,
+            await donation_crud.get_not_full_invested_objects(session)))
+
+    await session.commit()
+    await session.refresh(project)
     return project
 
 
@@ -69,12 +79,9 @@ async def partially_update_charity_project(
         await check_full_amount_greater_than_invested(
             charity_project, obj_in.full_amount
         )
-
-    charity_project = await charity_project_crud.update(
+    return await charity_project_crud.update(
         charity_project, obj_in, session
     )
-
-    return charity_project
 
 
 @router.delete(
@@ -90,5 +97,4 @@ async def remove_charity_project(
     project = await check_charity_project_exists(charity_project_id, session)
     await check_charity_project_invested_exists(project)
 
-    project = await charity_project_crud.remove(project, session)
-    return project
+    return await charity_project_crud.remove(project, session)

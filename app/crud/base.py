@@ -35,15 +35,17 @@ class CRUDBase:
             self,
             obj_in,
             session: AsyncSession,
-            user: Optional[User] = None
+            user: Optional[User] = None,
+            pass_commit: bool = False
     ):
         obj_in_data = obj_in.dict()
         if user is not None:
             obj_in_data['user_id'] = user.id
         db_obj = self.model(**obj_in_data)
         session.add(db_obj)
-        await session.commit()
-        await session.refresh(db_obj)
+        if not pass_commit:
+            await session.commit()
+            await session.refresh(db_obj)
         return db_obj
 
     async def update(
@@ -71,3 +73,14 @@ class CRUDBase:
         await session.delete(db_obj)
         await session.commit()
         return db_obj
+
+    async def get_not_full_invested_objects(
+        self,
+        session: AsyncSession,
+    ):
+        objects = await session.execute(
+            select(self.model).where(
+                self.model.fully_invested == 0
+            ).order_by(self.model.create_date)
+        )
+        return objects.scalars().all()
