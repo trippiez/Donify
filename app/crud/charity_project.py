@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, func
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
@@ -26,14 +26,16 @@ class CRUDCharityProject(CRUDBase):
         self,
         session: AsyncSession
     ) -> list[CharityProject]:
-        fundraising_in_days = func.juliandate(
-            CharityProject.close_date
-        ) - func.juliandate(
-            CharityProject.create_date
-        )
+        fundraising_in_days = func.date_diff(text('day'), CharityProject.close_date, CharityProject.create_date).label('days')
+        fundraising_in_time = func.time_diff(CharityProject.close_date, CharityProject.create_date).label('time')
 
         charity_projects = await session.execute(
-            select(CharityProject).where(
+            select([
+                CharityProject.name,
+                fundraising_in_days,
+                fundraising_in_time,
+                CharityProject.description
+            ]).where(
                 CharityProject.fully_invested == 1
             ).order_by(fundraising_in_days)
         )
