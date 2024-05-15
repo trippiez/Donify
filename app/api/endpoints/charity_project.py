@@ -13,7 +13,7 @@ from app.crud.donation import donation_crud
 from app.schemas.charity_project import (CharityProjectCreate,
                                          CharityProjectDB,
                                          CharityProjectUpdate)
-from app.services.investing import investing
+from app.utils.investing import investing
 
 router = APIRouter()
 
