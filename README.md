@@ -1,10 +1,10 @@
-# QRKot - Fundraising Platform
+# Donify - Fundraising Platform
 
-QRKot is a fundraising platform designed to manage multiple target projects efficiently. It facilitates donations from users and distributes them among various projects based on priority and funding requirements.
+Donify is a fundraising platform designed to manage multiple target projects efficiently. It facilitates donations from users and distributes them among various projects based on priority and funding requirements.
 
 ## Project Description
 
-QRKot enables users to contribute to different projects by making donations. Each project has a title, description, and a funding goal. Once a project reaches its funding goal, it is marked as closed, and donations are then redirected to the next project in line.
+Donify enables users to contribute to different projects by making donations. Each project has a title, description, and a funding goal. Once a project reaches its funding goal, it is marked as closed, and donations are then redirected to the next project in line.
 
 ## Key Features
 
