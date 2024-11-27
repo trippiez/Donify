@@ -1,4 +1,4 @@
-# Donify - Fundraising Platform
+# Donify (Donate + Simplify) - Fundraising Platform
 
 Donify is a fundraising platform designed to manage multiple target projects efficiently. It facilitates donations from users and distributes them among various projects based on priority and funding requirements.
 
