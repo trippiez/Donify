@@ -125,3 +125,4 @@ uvicorn app.main:app (--reload)
 
 Backend by: Eric Ivanov
 - e-mail: ldqfv@mail.ru
+- telegram: @ssstqdm
